@@ -1,4 +1,5 @@
 ### delete book model
+>>>from bookshelf.models import Book
 >>> mybook = Book.objects.get(title="Ninteen Eighty-Four")
 >>> mybook.delete()
 (1, {'bookshelf.Book': 1})
