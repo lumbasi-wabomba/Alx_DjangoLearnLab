@@ -3,8 +3,8 @@ Type "help", "copyright", "credits" or "license" for more information.
 (InteractiveConsole)
 
 >>>author_name = "James Peterson"
->>> myauthor = Author.objects.get(name=author_name)
->>> books = myauthor.book.all()
+>>> author = Author.objects.get(name=author_name)
+>>> books = myauthor.book.filter(author=author)
 >>> for book in books:
 ...     print(book.title)
 ... 
