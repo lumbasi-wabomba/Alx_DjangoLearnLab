@@ -1,7 +1,9 @@
 Python 3.12.3 (main, Jun 18 2025, 17:59:45) [GCC 13.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 (InteractiveConsole)
->>> myauthor = Author.objects.get(name="James Peterson")
+
+>>>author_name = "James Peterson"
+>>> myauthor = Author.objects.get(name=author_name)
 >>> books = myauthor.book.all()
 >>> for book in books:
 ...     print(book.title)
