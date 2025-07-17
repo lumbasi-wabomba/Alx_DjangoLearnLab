@@ -4,7 +4,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 >>>author_name = "James Peterson"
 >>> author = Author.objects.get(name=author_name)
->>> books = myauthor.book.filter(author=author)
+>>> books = Book.objects.filter(author=author)
 >>> for book in books:
 ...     print(book.title)
 ... 
