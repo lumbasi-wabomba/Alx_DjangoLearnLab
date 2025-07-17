@@ -9,7 +9,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 the fairytale
 the journey
 >>>
->>> mylibrary = Library.objects.get(name="Kenedy's Library")
+>>>  Library.objects.get(name="Kenedy's Library")
 >>> librarybooks = mylibrary.books.all()
 >>> for librarybook in librarybooks:
 ...     print(librarybook.title)
