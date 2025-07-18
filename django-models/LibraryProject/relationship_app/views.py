@@ -11,7 +11,7 @@ def function_based_view_book(request):
     context = {'book_list': books}
     return render(request, 'relationship_app/list_books.html', context)
 
-class Library_view(DetailView):
+class LibraryDetailview(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'  
 

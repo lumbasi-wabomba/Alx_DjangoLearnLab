@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from relationship_app import views
 from relationship_app.views import Library_view
+from .views import list_books, LibraryDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
