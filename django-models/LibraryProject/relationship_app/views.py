@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Author, Librarian, Library, Book
+from .models import Author
+from .models import Librarian
+from .models import Library
+from .models import Book
 from django.views.generic import DetailView
 
 def function_based_view_book(request):
