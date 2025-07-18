@@ -4,7 +4,7 @@ from .models import Author
 from .models import Librarian
 from .models import Library
 from .models import Book
-from django.views.generic import DetailView
+from django.views.generic.detail import DetailView
 
 def function_based_view_book(request):
     books = Book.objects.all()
