@@ -9,7 +9,7 @@ from django.views.generic import DetailView
 def function_based_view_book(request):
     books = Book.objects.all()
     context ={'book_list': books}
-    return render(request, 'books/book_list.html', context)
+    return render(request, 'LibraryProject/templates/relationship_app/book_list.html', context)
 # Create your views here.
 class Library_view(DetailView):
     model = Library
