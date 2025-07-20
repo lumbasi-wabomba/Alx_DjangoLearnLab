@@ -1,51 +1,49 @@
-from django.shortcuts import render
-from django.views.generic import DetailView, FormView, RedirectView
-from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
-from .models import Author, Librarian, Library, Book
+from .models import Book, Library
 
-# ✅ Function-based view to list all books
+# View to list all books
 def function_based_view_book(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/list_books.html', {'book_list': books})
 
-# ✅ Class-based detail view for Library
-class LibraryDetailview(DetailView):
-    model = Library
-    template_name = 'relationship_app/library_detail.html'
+# Library detail view
+def library_detail(request, pk):
+    library = get_object_or_404(Library, pk=pk)
+    return render(request, 'relationship_app/library_detail.html', {'library': library})
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['library'] = self.get_object()
-        return context
+# User registration
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            auth_login(request, user)
+            return redirect('profile')
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
+# User login
+def login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('profile')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'relationship_app/login.html', {'form': form})
+
+# User logout
+def logout(request):
+    auth_logout(request)
+    return redirect('login')
+
+# User profile
 @login_required
 def profile(request):
     return render(request, 'relationship_app/profile.html')
-# views.py
-class LoginView(FormView):
-    form_class = AuthenticationForm
-    success_url = reverse_lazy('profile')
-
-    def form_valid(self, form):
-        user = form.get_user()
-        auth_login(self.request, user)
-        return super().form_valid(form)
-
-class LogoutView(RedirectView):
-    pattern_name = 'login'
-
-    def get(self, request, *args, **kwargs):
-        auth_logout(request)
-        return super().get(request, *args, **kwargs)
-
-class RegisterView(FormView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('profile')
-
-    def form_valid(self, form):
-        user = form.save()
-        auth_login(self.request, user)
-        return super().form_valid(form)
