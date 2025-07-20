@@ -5,6 +5,7 @@ from .models import Librarian
 from .models import Library
 from .models import Book
 from django.views.generic.detail import DetailView
+from django.contrib.auth.decorators import login_required
 
 def function_based_view_book(request):
     books = Book.objects.all()
@@ -20,3 +21,16 @@ class LibraryDetailview(DetailView):
         library = self.get_object()
         context['library'] = library 
         return context
+
+@login_required
+def profile_view(request):
+    return render(request, 'relationship_app/profile.html')
+
+def logout(request):
+    return render(request, 'relationship_app/logout.html')
+
+def login(request):
+     return render(request, 'relationship_app/login.html')
+
+def register(request):
+     return render(request, 'relationship_app/register.html')
