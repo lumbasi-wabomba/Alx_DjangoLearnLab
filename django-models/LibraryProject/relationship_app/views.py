@@ -21,17 +21,19 @@ class LibraryDetailview(DetailView):
         context['library'] = self.get_object()
         return context
 
-# ✅ Class-based Login view
+@login_required
+def profile(request):
+    return render(request, 'relationship_app/profile.html')
+# views.py
 class LoginView(FormView):
-    template_name = 'relationship_app/login.html'
     form_class = AuthenticationForm
     success_url = reverse_lazy('profile')
 
     def form_valid(self, form):
-        auth_login(self.request, form.get_user())
+        user = form.get_user()
+        auth_login(self.request, user)
         return super().form_valid(form)
 
-# ✅ Class-based Logout view
 class LogoutView(RedirectView):
     pattern_name = 'login'
 
@@ -39,9 +41,7 @@ class LogoutView(RedirectView):
         auth_logout(request)
         return super().get(request, *args, **kwargs)
 
-# ✅ Class-based Register view
 class RegisterView(FormView):
-    template_name = 'relationship_app/register.html'
     form_class = UserCreationForm
     success_url = reverse_lazy('profile')
 
@@ -49,8 +49,3 @@ class RegisterView(FormView):
         user = form.save()
         auth_login(self.request, user)
         return super().form_valid(form)
-
-# ✅ Profile view for logged-in users
-@login_required
-def profile(request):
-    return render(request, 'relationship_app/profile.html')
