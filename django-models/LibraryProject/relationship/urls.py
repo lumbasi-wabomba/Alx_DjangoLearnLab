@@ -16,22 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from relationship_app.views import (
-    function_based_view_book,
-    LibraryDetailview,
-    LoginView,
-    LogoutView,
-    RegisterView,
-    profile,
-)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('books/', function_based_view_book, name='books'),
-    path('library/<int:pk>/', LibraryDetailview.as_view(), name='library'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('register/', RegisterView.as_view(), name='register'),
-    path('profile/', profile, name='profile'),
-    path('accounts/', include('relationship_app.urls')),  
+    path('', include('relationship_app.urls')),  # all app routes now live under '/'
 ]
