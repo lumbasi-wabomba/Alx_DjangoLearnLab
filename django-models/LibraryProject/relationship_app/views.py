@@ -16,6 +16,10 @@ def function_based_view_book(request):
 class LibraryDetailview(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
+    def display_books(request):
+        library_details = Library.objects.get(name= request)
+        for library_detail in library_details:
+            print(library_detail.title)
 
 class LoginView(FormView):
     template_name = 'relationship_app/login.html'

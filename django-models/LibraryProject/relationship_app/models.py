@@ -12,6 +12,9 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='book')
     def __str__(self):
         return self.name
+    class Meta(Book):
+        
+
 
 class Library(models.Model):
     name = models.CharField(max_length=200)
