@@ -6,6 +6,7 @@ from relationship_app.views import (
     LogoutView,
     RegisterView,
 )
+from .views import list_books, LibraryDetailView
 
 urlpatterns = [
     path('books/', views.function_based_view_book, name='books'),
