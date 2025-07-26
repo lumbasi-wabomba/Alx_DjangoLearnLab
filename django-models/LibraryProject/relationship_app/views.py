@@ -4,7 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from .models import Book, Library
+from .models import Book
+from .models import Library
 
 from django.contrib.auth.decorators import user_passes_test, login_required
 from .models import UserProfile
