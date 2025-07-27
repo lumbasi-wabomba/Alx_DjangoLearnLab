@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-7o2&3pz9m94o-)ygov$t$!l7v#w9v$&v^0cjep^x5ccz#jd!xh
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'relationship_app.CustomUser'
 
 
 # Application definition

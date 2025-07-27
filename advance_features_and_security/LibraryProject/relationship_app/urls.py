@@ -4,7 +4,6 @@ from relationship_app.views import (
     LibraryDetailview,
     LoginView,
     LogoutView,
-    RegisterView,
 )
 from .views import list_books, LibraryDetailView
 from .views import add_book_view, edit_book_view, delete_book_view
