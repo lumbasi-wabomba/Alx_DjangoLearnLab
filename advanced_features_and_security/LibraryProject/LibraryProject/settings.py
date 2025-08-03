@@ -123,3 +123,47 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# settings.py (only relevant security parts)
+
+DEBUG = False  # Turn off in production!
+
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']
+
+# Secure browser-side protections
+SECURE_BROWSER_XSS_FILTER = True  # Enables XSS filter in modern browsers
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-type sniffing
+X_FRAME_OPTIONS = 'DENY'  # Prevents clickjacking
+
+# HTTPS-related settings (enable when using HTTPS)
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP to HTTPS
+
+# Optional: HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+INSTALLED_APPS += ['csp']
+
+MIDDLEWARE = [
+    'csp.middleware.CSPMiddleware',
+    # ... other middlewares ...
+]
+
+# Define the CSP rules
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
+CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
+CSP_SCRIPT_SRC = ("'self'",)
+
+# Optional: Report violations (replace URL with your own reporting service)
+# CSP_REPORT_URI = 'https://your-csp-report-collector.com'
+# Prevent XSS in modern browsers
+SECURE_BROWSER_XSS_FILTER = True
+
+# Deny loading the site in iframes (mitigates clickjacking)
+X_FRAME_OPTIONS = 'DENY'
+
+# Ensure cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
