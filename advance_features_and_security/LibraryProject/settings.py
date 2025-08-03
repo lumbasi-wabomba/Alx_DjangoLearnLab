@@ -26,6 +26,9 @@ SECRET_KEY = 'django-insecure-3bd$+kr2kox5jo6p6j#t(g@!4d94$6c0=(4ja3^qe7@o7jzjv8
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Application definition
