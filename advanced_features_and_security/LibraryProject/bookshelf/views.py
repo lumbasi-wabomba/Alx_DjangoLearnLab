@@ -51,3 +51,8 @@ def book_search(request):
         Q(title__icontains=query) | Q(author__icontains=query)
     )
     return render(request, 'library/book_search.html', {'results': results, 'query': query})
+
+form = BookSearchForm(request.GET)
+if form.is_valid():
+    query = form.cleaned_data['query']
+    results = Book.objects.filter(title__icontains=query)
