@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView
-from .serealizers import BookSerializer
+from .serializers import BookSerializer
 from .models import Book
 # Create your views here.
 
