@@ -12,6 +12,7 @@ from rest_framework.response import Response
 class BookList(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated] 
+    template_name = 'book_list.html'
     
     def get(self, request):
         queryset = Book.objects.all()
@@ -21,6 +22,7 @@ class BookList(generics.ListAPIView):
 class BookViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated] 
+    template_name = 'book_list.html'
 
     def get(self, request):
         queryset = Book.objects.all()
