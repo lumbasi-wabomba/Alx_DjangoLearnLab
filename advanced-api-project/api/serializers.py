@@ -3,7 +3,6 @@ from .models import Book
 from .models import Author
 from datetime import date
 
-
 class BookSerializer(serializers.ModelSerializer):
     model = Book
     fields = '__all__'
