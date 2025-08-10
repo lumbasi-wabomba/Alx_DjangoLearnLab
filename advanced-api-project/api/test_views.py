@@ -4,6 +4,7 @@ from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
 from api.models import Author, Book  
+from rest_framework import response
 
 User = get_user_model()
 
@@ -73,34 +74,34 @@ class BookAPITestCase(APITestCase):
         """Unauthenticated user cannot update a book."""
         url = reverse("update-book", args=[self.book1.id])
         payload = {"title": "Fail Update"}
-        resp = self.client.patch(url, payload, format="json")
-        self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
+        response = self.client.patch(url, payload, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_delete_book_authenticated(self):
         """Authenticated user can delete a book."""
         url = reverse("delete-book", args=[self.book2.id])
-        resp = self.client.delete(url, **self.auth_headers)
-        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.delete(url, **self.auth_headers)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Book.objects.filter(id=self.book2.id).exists())
 
     def test_delete_book_unauthenticated(self):
         """Unauthenticated user cannot delete a book."""
         url = reverse("delete-book", args=[self.book1.id])
-        resp = self.client.delete(url)
-        self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_search_books(self):
         """Search filter works on title."""
         url = reverse("list-books")
-        resp = self.client.get(url, {"search": "Django"})
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        found_titles = [book["title"] for book in resp.data]
+        response = self.client.get(url, {"search": "Django"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        found_titles = [book["title"] for book in response.data]
         self.assertTrue(any("Django" in title for title in found_titles))
 
     def test_order_books_by_year_desc(self):
         """Ordering works on publication_year."""
         url = reverse("list-books")
-        resp = self.client.get(url, {"ordering": "-publication_year"})
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        years = [book["publication_year"] for book in resp.data]
+        response = self.client.get(url, {"ordering": "-publication_year"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        years = [book["publication_year"] for book in response.data]
         self.assertEqual(years, sorted(years, reverse=True))
