@@ -4,16 +4,18 @@ from .models import Author
 from datetime import date
 
 class BookSerializer(serializers.ModelSerializer):
-    model = Book
-    fields = '__all__'
+    class Meta:
+        model = Book
+        fields = '__all__'
 
 class AuthorSerializer(serializers.ModelSerializer):
-    model = Author
-    fields = ['name']
-    book = BookSerializer(many=True, read_only=True)
+    class Meta:
+        model = Author
+        fields = ['name']
+        book = BookSerializer(many=True, read_only=True)
 
-    
-    def validate_publication_year(self, data):
-        if date().year(data['publication_year']) > date.today().year(): 
-            raise serializers.ValidationError("the date is in the future")
-        return data
+        
+        def validate_publication_year(self, value):
+            if value(['publication_year']) > date.today().year(): 
+                raise serializers.ValidationError("the date is in the future")
+            return value
