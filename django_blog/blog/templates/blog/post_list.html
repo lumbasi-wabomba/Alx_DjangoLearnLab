@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+<h2>Blog Posts</h2>
+
+{% if posts %}
+    <ul class="post-list">
+        {% for post in posts %}
+            <li class="post-item">
+                <h3>{{ post.title }}</h3>
+                <p class="post-meta">
+                    By {{ post.author.username }} on {{ post.published_date|date:"F j, Y, g:i a" }}
+                </p>
+                <p>{{ post.content|truncatewords:50 }}</p>
+                <a href="#">Read more</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No blog posts available.</p>
+{% endif %}
+
+{% endblock %}

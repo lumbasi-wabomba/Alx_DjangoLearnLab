@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<article class="post-detail">
+    <h2>{{ post.title }}</h2>
+    <p class="post-meta">
+        By {{ post.author.username }} on {{ post.published_date|date:"F j, Y, g:i a" }}
+    </p>
+    <div class="post-content">
+        {{ post.content|linebreaks }}
+    </div>
+
+    <p><a href="{% url 'posts' %}">&larr; Back to all posts</a></p>
+</article>
+{% endblock %}

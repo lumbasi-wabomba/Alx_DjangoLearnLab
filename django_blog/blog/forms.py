@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import Post
 
 
 class LoginForm(AuthenticationForm):
@@ -27,3 +28,11 @@ class ProfileForm(forms.ModelForm):
 class LogoutForm(forms.Form):
     pass  # No fields needed for logout, just a placeholder
 
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Enter post title'}),
+            'content': forms.Textarea(attrs={'placeholder': 'Write your post content here...'}),
+        }
