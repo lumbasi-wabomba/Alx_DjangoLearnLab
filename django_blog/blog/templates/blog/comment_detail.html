@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}View Comment{% endblock %}
+
+{% block content %}
+    <h2>Comment by {{ comment.author }} on "{{ comment.post.title }}"</h2>
+    <p>{{ comment.content }}</p>
+    <a href="{% url 'post_detail' comment.post.pk %}">Back to Post</a>
+{% endblock %}
