@@ -3,6 +3,7 @@ from .forms import LoginForm, RegisterForm, ProfileForm, LogoutForm, PostForm, C
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, is_authenticated
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import viewsets
 
 
@@ -116,7 +117,7 @@ class DeleteView(viewsets.ViewSet):
         return render(request, 'post_confirm_delete.html', {'post': post})
     
 @login_required
-class CommentView(viewsets.ViewSet):
+class CommentCreateView(viewsets.ViewSet, LoginRequiredMixin, UserPassesTestMixin):
     def add_comment(self, request, post_pk):
         post = Post.objects.get(pk=post_pk)
         if request.method == 'POST':
@@ -130,7 +131,8 @@ class CommentView(viewsets.ViewSet):
         else:
             form = CommentForm()
         return render(request, 'comment_form.html', {'form': form, 'post': post})
-    
+
+class CommentUpdateView(viewsets.ViewSet, LoginRequiredMixin, UserPassesTestMixin):
     def edit_comment(self, request, comment_pk):
         comment = Comment.objects.get(pk=comment_pk)
         if request.method == 'POST':
@@ -142,6 +144,15 @@ class CommentView(viewsets.ViewSet):
             form = CommentForm(instance=comment)
         return render(request, 'comment_form.html', {'form': form, 'post': comment.post})
 
+class CommentDeleteView(viewsets.ViewSet, LoginRequiredMixin, UserPassesTestMixin):
+    def delete_comment(self, request, comment_pk):
+        comment = Comment.objects.get(pk=comment_pk)
+        if request.method == 'POST':
+            comment.delete()
+            return redirect('post_detail', pk=comment.post.pk)
+        return render(request, 'comment_confirm_delete.html', {'comment': comment})
+    
+class CommentDetailView(viewsets.ViewSet):
     def view_comment(self, request, comment_pk):
         comment = Comment.objects.get(pk=comment_pk)
         return render(request, 'comment_detail.html', {'comment': comment})
