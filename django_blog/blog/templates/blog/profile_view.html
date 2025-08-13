@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+<h2>My Profile</h2>
+<div id="profile"></div>
+
+<h3>Update Profile</h3>
+<form id="updateForm">
+    <label>Username:</label>
+    <input type="text" name="username"><br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+<p id="message"></p>
+
+<script>
+async function loadProfile() {
+    let token = localStorage.getItem("token");
+    if (!token) {
+        document.getElementById("profile").innerText = "You must log in first.";
+        return;
+    }
+
+    let res = await fetch("/profile/", { 
+        headers: { "Authorization": "Token " + token }
+    });
+
+    let data = await res.json();
+    document.getElementById("profile").innerText = JSON.stringify(data);
+}
+
+document.getElementById("updateForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    let token = localStorage.getItem("token");
+
+    let res = await fetch("/profile/", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Token " + token
+        },
+        body: JSON.stringify({ username: e.target.username.value })
+    });
+
+    let data = await res.json();
+    document.getElementById("message").innerText = res.ok ? "Profile updated!" : JSON.stringify(data);
+    loadProfile();
+});
+
+loadProfile();
+</script>
+</body>
+</html>
