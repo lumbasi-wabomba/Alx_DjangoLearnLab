@@ -2,7 +2,7 @@ from .models import Post, User
 from .forms import LoginForm, RegisterForm, ProfileForm, LogoutForm, PostForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required   
+from django.contrib.auth.decorators import login_required, is_authenticated
 from rest_framework import viewsets
 
 
@@ -41,6 +41,7 @@ class RegisterView(viewsets.ViewSet):
         return render(request, 'register.html', {'form': form})
     
 @login_required
+@is_authenticated
 class ProfileManagementView(viewsets.ViewSet):
     def update_profile(self, request):
         user = request.user
@@ -74,8 +75,9 @@ class DetailView(viewsets.ViewSet):
     def post_detail(self, request, pk):
         post = Post.objects.get(pk=pk)
         return render(request, 'post_detail.html', {'post': post})
-    
-class createView(viewsets.ViewSet):
+
+@login_required
+class CreateView(viewsets.ViewSet):
     def create_post(self, request):
         if request.method == 'POST':
             form = PostForm(request.POST)
@@ -88,7 +90,10 @@ class createView(viewsets.ViewSet):
             form = PostForm()
         return render(request, 'post_form.html', {'form': form})
     
-class updateView(viewsets.ViewSet):
+
+@is_authenticated
+@login_required
+class UpdateView(viewsets.ViewSet):
     def update_post(self, request, pk):
         post = Post.objects.get(pk=pk)
         if request.method == 'POST':
@@ -99,8 +104,10 @@ class updateView(viewsets.ViewSet):
         else:
             form = PostForm(instance=post)
         return render(request, 'post_form.html', {'form': form})
-    
-class deleteView(viewsets.ViewSet):
+
+@login_required
+@is_authenticated
+class DeleteView(viewsets.ViewSet):
     def delete_post(self, request, pk):
         post = Post.objects.get(pk=pk)
         if request.method == 'POST':
