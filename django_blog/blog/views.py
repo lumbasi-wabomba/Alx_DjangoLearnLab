@@ -2,7 +2,7 @@ from .models import Post, User, Comment
 from .forms import LoginForm, RegisterForm, ProfileForm, LogoutForm, PostForm, CommentForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required, is_authenticated
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import viewsets
 
@@ -42,7 +42,6 @@ class RegisterView(viewsets.ViewSet):
         return render(request, 'register.html', {'form': form})
     
 @login_required
-@is_authenticated
 class ProfileManagementView(viewsets.ViewSet):
     def update_profile(self, request):
         user = request.user
@@ -91,10 +90,8 @@ class CreateView(viewsets.ViewSet):
             form = PostForm()
         return render(request, 'post_form.html', {'form': form})
     
-
-@is_authenticated
 @login_required
-class UpdateView(viewsets.ViewSet, Lo):
+class UpdateView(viewsets.ViewSet, LoginRequiredMixin, UserPassesTestMixin):
     def update_post(self, request, pk):
         post = Post.objects.get(pk=pk)
         if request.method == 'POST':
@@ -107,7 +104,6 @@ class UpdateView(viewsets.ViewSet, Lo):
         return render(request, 'post_form.html', {'form': form})
 
 @login_required
-@is_authenticated
 class DeleteView(viewsets.ViewSet):
     def delete_post(self, request, pk):
         post = Post.objects.get(pk=pk)
