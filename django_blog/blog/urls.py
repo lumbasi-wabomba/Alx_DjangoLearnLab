@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginView, LogoutView, RegisterView, ProfileManagementView
+from .views import LoginView, LogoutView, RegisterView, ProfileManagementView, TagView
 from .views import ListView, DetailView, CreateView, UpdateView, DeleteView, CommentCreateView, CommentDeleteView, CommentUpdateView, CommentDetailView
 
 urlpatterns = [
@@ -13,10 +13,12 @@ urlpatterns = [
     path('post/', ListView.as_view({'get': 'list_posts'}), name='post_list'),
     path('post/<int:post_id>/', DetailView.as_view({'get': 'post_detail'}), name='post_detail'),
     path('post/new/', CreateView.as_view(), name='post_create'),
-    path('post/<int:post_id>/update/', UpdateView.as_view(), name='post_update'),
-    path('post/<int:post_id>/delete/', DeleteView.as_view(), name='post_delete'),
+    path('post/<int:pk>/update/', UpdateView.as_view(), name='post_update'),
+    path('post/<int:pk>/delete/', DeleteView.as_view(), name='post_delete'),
     path('post/<int:post_id>/comment/new/', CommentCreateView.as_view({'post': 'add_comment'}), name='add_comment'),
     path('post/<int:post_id>/comment/<int:comment_id>/edit/', CommentUpdateView.as_view({'post': 'edit_comment'}), name='edit_comment'),
     path('post/<int:post_id>/comment/<int:comment_id>/', CommentDetailView.as_view({'get': 'view_comment'}), name='view_comment'),
     path('post/<int:post_id>/comment/<int:comment_id>/delete/', CommentDeleteView.as_view({'post': 'delete_comment'}), name='delete_comment'),
+    path('tags/<tag_name>/', TagView.as_view({'get': 'tag_posts'}), name='tagged_posts'),
+    path('tags/', TagView.as_view({'get': 'search_tags'}), name='search_tags'),
 ]

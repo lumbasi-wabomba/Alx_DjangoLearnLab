@@ -152,3 +152,15 @@ class CommentDetailView(viewsets.ViewSet):
     def view_comment(self, request, comment_pk):
         comment = Comment.objects.get(pk=comment_pk)
         return render(request, 'comment_detail.html', {'comment': comment})
+    
+class TagView(viewsets.ViewSet):
+    def tag_posts(self, request, tag_name):
+        posts = Post.objects.filter(tags__name=tag_name)
+        return render(request, 'tagged_posts.html', {'posts': posts, 'tag_name': tag_name})
+    def search_posts(self, request):
+        query = request.GET.get('q')
+        if query:
+            posts = Post.objects.filter(title__icontains=query)
+        else:
+            posts = Post.objects.all()
+        return render(request, 'search_results.html', {'posts': posts, 'query': query})
