@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Comment
 from django.contrib.auth import get_user_model
 
 class UserSerializer(serializers.ModelSerializer):
@@ -46,3 +46,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         if user.username != attrs['username']:
             raise serializers.ValidationError("You can only edit your own profile.")
         return attrs
+    
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['post', 'user', 'tags']
+        
