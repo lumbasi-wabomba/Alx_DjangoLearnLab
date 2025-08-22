@@ -9,13 +9,4 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
-class Comment(models.Model):
-    post = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_posts')
-    tags = models.ManyToManyField(User)
-
-    def __str__(self):
-        return self.post
-    
     

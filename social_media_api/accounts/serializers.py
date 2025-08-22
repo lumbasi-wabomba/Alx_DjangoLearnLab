@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import User, Comment
 from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,6 +27,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password', 'bio', 'profile_picture']
 
     def create(self, validated_data):
+        # get_user_model().objects.create()
+        # Token.objects.create(user=user)
         user = get_user_model().objects.create(
             username = validated_data['username'],
             email = validated_data['email'],
@@ -47,8 +50,3 @@ class ProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("You can only edit your own profile.")
         return attrs
     
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ['post', 'user', 'tags']
-        

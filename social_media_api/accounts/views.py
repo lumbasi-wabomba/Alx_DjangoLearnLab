@@ -70,11 +70,4 @@ class ProfileView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-    
-# class CommentView(APIView):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = CommentSerializer
-#     lookup_field = 'id'
-
-#     def add_comment(self, request):
 
