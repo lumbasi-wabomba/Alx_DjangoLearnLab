@@ -1,6 +1,6 @@
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.response import Response
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, ProfileSerializer, CommentSerializer
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, ProfileSerializer
 from .models import User    
 from rest_framework import viewsets
 from rest_framework.generics import CreateAPIView
