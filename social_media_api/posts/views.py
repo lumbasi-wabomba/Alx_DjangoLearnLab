@@ -1,75 +1,43 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.exceptions import PermissionDenied
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.exceptions import PermissionDenied
-# Create your views here.
 
-class PostCreateView(CreateAPIView):
-    serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
-    queryset = Post.objects.all()
 
-    def post(self, request):
-        serializer = self.get_serializer(data= request.data)
-        serializer.is_valid(raise_exception = True)
-        post = serializer.save(author = self.request.user)
-
-        return Response(
-            UserSerializer(post).data,
-            status=HTTP_200_OK
-        )
-    
-class CommentCreateView(CreateAPIView):
-    serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
-    queryset = Comment.objects.all()
-
-    def post(self, request):
-        serializer = self.get_serializer(data= request.data)
-        serializer.is_valid(raise_exception = True)
-        comment = serializer.save(user = self.request.user)
-
-        return Response(
-            UserSerializer(comment).data,
-            status=HTTP_200_OK
-        )
-    
-class CommentsView(ListAPIView):
-    permission_classes = [AllowAny]
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-
-class UpdatePostView(RetrieveUpdateDestroyAPIView):
+class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
     def perform_update(self, serializer):
-        post = self.get_object()
-        if post.author != self.request.user:
-            raise PermissionDenied("You must be the author to modify this post.")
+        if self.get_object().author != self.request.user:
+            raise PermissionDenied("You can only edit your own posts.")
         serializer.save()
 
     def perform_destroy(self, instance):
         if instance.author != self.request.user:
-            raise PermissionDenied("You must be the author to delete this post.")
+            raise PermissionDenied("You can only delete your own posts.")
         instance.delete()
 
 
-class UpdateCommentView(RetrieveUpdateDestroyAPIView):
+class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     def perform_update(self, serializer):
-        comment = self.get_object()
-        if comment.user != self.request.user: 
-            raise PermissionDenied("You must be the author to modify this comment.")
+        if self.get_object().user != self.request.user:
+            raise PermissionDenied("You can only edit your own comments.")
         serializer.save()
 
     def perform_destroy(self, instance):
-        if instance.user != self.request.user: 
-            raise PermissionDenied("You must be the author to delete this comment.")
+        if instance.user != self.request.user:
+            raise PermissionDenied("You can only delete your own comments.")
         instance.delete()
