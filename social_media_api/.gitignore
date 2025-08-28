@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-arg.txt
+
+# Django
+*.sqlite3
+media/
+static/
+local_settings.py
+# If you are using collectstatic, you might want to ignore the collected static files
+# but be careful if you deploy with collected static files in your repo.
+# staticfiles/
+
+# IDE specific files
+.idea/  # IntelliJ IDEA
+.vscode/ # VS Code
+*.sublime-workspace # Sublime Text
+*.swp # Vim swap files
+*.swo # Vim swap files
+.DS_Store # macOS specific
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Logs
+*.log
+/.vscode/
+# Sensitive information (example, adjust as needed)
+# Ensure your secret key is handled securely, e.g., via environment variables
+# or a separate, ignored settings file.
+# secret_key.py
+
+# Django REST Framework (no specific DRF files are usually ignored beyond
+# what's covered by general Django/Python rules)

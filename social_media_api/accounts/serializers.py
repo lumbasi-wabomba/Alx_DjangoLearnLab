@@ -1,13 +1,12 @@
 from rest_framework import serializers
-from .models import User
+from .models import CustomUser
 from django.contrib.auth import get_user_model
-from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User 
-        fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'followers']
-        read_only_fields = ['id', 'followers']
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'following']
+        read_only_fields = ['id', 'following']
 
    
 
@@ -16,14 +15,14 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        user = User.objects.filter(username=data['username']).first()
+        user = CustomUser.objects.filter(username=data['username']).first()
         if user and user.check_password(data['password']):
             return {'user': user}
         raise serializers.ValidationError("Invalid credentials")
     
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'email', 'password', 'bio', 'profile_picture']
 
     def create(self, validated_data):
@@ -41,7 +40,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'email', 'bio', 'profile_picture', 'followers']
 
     def validate(self, attrs):
@@ -49,4 +48,3 @@ class ProfileSerializer(serializers.ModelSerializer):
         if user.username != attrs['username']:
             raise serializers.ValidationError("You can only edit your own profile.")
         return attrs
-    

@@ -5,7 +5,7 @@ from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 
 
-class PostViewSet(generics.GenericAPIView):
+class PostView(generics.GenericAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
@@ -22,9 +22,12 @@ class PostViewSet(generics.GenericAPIView):
         if instance.author != self.request.user:
             raise PermissionDenied("You can only delete your own posts.")
         instance.delete()
+    
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user) | Post.objects.filter(author__in=self.request.user.followers.all())
 
 
-class CommentViewSet(generics.GenericAPIView):
+class CommentView(generics.GenericAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated]
