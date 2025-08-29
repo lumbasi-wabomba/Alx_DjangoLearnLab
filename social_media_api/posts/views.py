@@ -46,3 +46,18 @@ class CommentView(generics.GenericAPIView):
         if instance.user != self.request.user:
             raise PermissionDenied("You can only delete your own comments.")
         instance.delete()
+
+class LikeView(generics.GenericAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_like(self):
+        post = self.get_object()
+        post.likes.add(self.request.user)
+        post.save()
+
+    def perform_unlike(self):
+        post = self.get_object()
+        post.likes.remove(self.request.user)
+        post.save()
