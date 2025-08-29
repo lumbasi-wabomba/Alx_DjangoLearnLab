@@ -16,7 +16,7 @@ from rest_framework.authtoken.models import Token
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     lookup_field = 'username'
 
