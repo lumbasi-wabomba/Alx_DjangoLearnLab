@@ -26,7 +26,7 @@ class PostView(generics.GenericAPIView):
     
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user) | Post.objects.filter(author__in=self.request.user.followers.all())
-    #Post.objects.filter(author__in=self.request.user.following_users.all())
+    posts = Post.objects.filter(author_in=following_users).order_by('-created_at')
 
 class CommentView(generics.GenericAPIView):
     queryset = Comment.objects.all()
