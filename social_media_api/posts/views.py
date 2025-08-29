@@ -25,8 +25,9 @@ class PostView(generics.GenericAPIView):
         instance.delete()
     
     def get_queryset(self):
-        return Post.objects.filter(author=self.request.user) | Post.objects.filter(author__in=self.request.user.followers.all())
-    posts = Post.objects.filter(author_in=following_users).order_by('-created_at')
+        following_users = self.request.user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+        return posts
 
 class CommentView(generics.GenericAPIView):
     queryset = Comment.objects.all()
