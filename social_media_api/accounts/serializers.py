@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'bio', 'profile_picture', 'following']
+        fields = ['id', 'username', 'email', 'bio', 'following']
         read_only_fields = ['id', 'following']
 
    
@@ -23,7 +23,7 @@ class LoginSerializer(serializers.Serializer):
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password', 'bio', 'profile_picture']
+        fields = ['username', 'email', 'password', 'bio']
 
     def create(self, validated_data):
         # get_user_model().objects.create_user()
@@ -32,7 +32,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             username = validated_data['username'],
             email = validated_data['email'],
             bio = validated_data['bio'],
-            profile_picture = validated_data['profile_picture']
+           # profile_picture = validated_data['profile_picture']
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -41,7 +41,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'bio', 'profile_picture', 'followers']
+        fields = ['username', 'email', 'bio', 'followers']
 
     def validate(self, attrs):
         user = self.context['request'].user
