@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
@@ -8,7 +9,7 @@ from .serializers import PostSerializer, CommentSerializer
 class PostView(generics.GenericAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -25,7 +26,7 @@ class PostView(generics.GenericAPIView):
     
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user) | Post.objects.filter(author__in=self.request.user.followers.all())
-    #Post.objects.filter(author__in=self.request.user.followers.all())
+    #Post.objects.filter(author__in=self.request.user.following_users.all())
 
 class CommentView(generics.GenericAPIView):
     queryset = Comment.objects.all()
