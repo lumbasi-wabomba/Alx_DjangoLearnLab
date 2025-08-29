@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ------------------------
 SECRET_KEY = 'django-insecure-op+#!()yh1pep!as0wa#p*()_m*dys9m_7h=_pbw-7lwu#=yf!'  # keep for practice
 DEBUG = False
-ALLOWED_HOSTS = ["*"]  # allow all since this is practice
+ALLOWED_HOSTS = ['https://social-media-practice.onrender.com']  
 
 # Security headers (ok for practice; adjust for real deployment)
 SECURE_BROWSER_XSS_FILTER = True
